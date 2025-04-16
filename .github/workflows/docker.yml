@@ -11,8 +11,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build Docker image
-      shell: bash
+      shell: pwsh
       run: docker build -t go-demo .
     - name: Run Docker container
-      shell: bash
+      shell: pwsh
       run: docker run -d -p 8888:8888 go-demo
