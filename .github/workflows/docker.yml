@@ -6,11 +6,23 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: self-hosted  # Убедитесь, что runner имеет Ubuntu
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+
+    - name: Setup Go environment
+      run: |
+        echo "Checking for go.mod..."
+        cd go  # Переход в папку с Go-проектом
+        if [ ! -f "go.mod" ]; then
+          go mod init demo
+          sed -i 's/^go .*/go 1.17/' go.mod
+          go mod tidy
+        fi
+
     - name: Build Docker image
       run: docker build -t go-demo .
+
     - name: Run Docker container
       run: docker run -d -p 8888:8888 go-demo
